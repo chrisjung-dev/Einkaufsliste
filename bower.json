@@ -1,0 +1,24 @@
+{
+  "name": "einkaufsliste",
+  "version": "0.0.0",
+  "authors": [
+    "Christian Jung <cjung@intera.de>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "angular": "~1.2.20",
+    "angular-route": "~1.2.19",
+    "angular-animate": "~1.2.20",
+    "jquery": "~2.1.1",
+    "jssha": "~1.5.0"
+  }
+}

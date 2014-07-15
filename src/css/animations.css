@@ -1,0 +1,33 @@
+.einkaufsliste-item.ng-enter,
+.einkaufsliste-item.ng-leave,
+.einkaufsliste-item.ng-move {
+	-webkit-transition: 0.5s linear all;
+	-moz-transition: 0.5s linear all;
+	-o-transition: 0.5s linear all;
+	transition: 0.5s linear all;
+}
+
+.einkaufsliste-item.ng-enter,
+.einkaufsliste-item.ng-move {
+	opacity: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.einkaufsliste-item.ng-move.ng-move-active,
+.einkaufsliste-item.ng-enter.ng-enter-active {
+	opacity: 1;
+	height: auto;
+}
+
+.einkaufsliste-item.ng-leave {
+	opacity: 1;
+	overflow: hidden;
+}
+
+.einkaufsliste-item.ng-leave.ng-leave-active {
+	opacity: 0;
+	height: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+}

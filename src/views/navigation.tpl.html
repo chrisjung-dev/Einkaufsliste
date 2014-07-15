@@ -1,0 +1,10 @@
+
+<nav class="navbar navbar-default navbar-fixed-bottom" role="navigation" ng-controller="NavigationController as nav">
+	<div class="container">
+		<ul class="nav navbar-nav">
+			<li ng-class="{active:nav.isActive(1)}" ng-click="nav.setActive(1)" ><a href="#/"><span class="glyphicon glyphicon-tasks"></span> Liste</a></li>
+			<li ng-class="{active:nav.isActive(2)}" ng-click="nav.setActive(2)" ><a href="#/new"><span class="glyphicon glyphicon-plus"></span> Neu </a></li>
+			<li ng-class="{active:nav.isActive(3)}" ng-click="nav.setActive(3)" ><a href="#/about"><span class="glyphicon glyphicon-question-sign"></span> Über</a></li>
+		</ul>
+	</div>
+</nav>

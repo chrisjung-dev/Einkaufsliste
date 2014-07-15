@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Einkaufsliste</title>
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="src/css/animations.css"/>
+	<style>
+        body {padding-bottom: 150px }
+        .main-headline {font-size: 1.5em}
+
+		.strike {text-decoration:line-through;}
+	</style>
+</head>
+<body ng-app="Einkaufsliste">
+
+
+<div class="container">
+
+    <h1 class="main-headline">Einkaufsliste</h1>
+
+    <ng-include src="'src/views/navigation.tpl.html'"></ng-include>
+
+	<div ng-controller="ListController as list">
+		<div ng-view></div>
+	</div>
+
+</div>
+
+<footer class="container"></footer>
+
+
+<script src="lib/jssha/src/sha1.js"></script>
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular-route/angular-route.min.js"></script>
+<script src="lib/angular-animate/angular-animate.min.js"></script>
+<script src="src/js/app.js"></script>
+</body>
+</html>
