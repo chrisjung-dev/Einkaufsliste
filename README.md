@@ -24,6 +24,8 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
+### 0.5.1
+* Mobile fix
 ### 0.5.0
 * Erstes Release
 
