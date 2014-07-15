@@ -22,6 +22,11 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
  3. `bower install` laufen lassen (kann man auch lokal machen und alles hochladen)
  4. ggf. .htaccess-Schutz vergeben
 
+## Versionen
+
+### 0.5.0
+* Erstes Release
+
 ## Roadmap
 
 * Das PHP besser machen
