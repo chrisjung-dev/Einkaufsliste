@@ -24,12 +24,13 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
-### 0.6.0
+### 0.6.0 / 0.6.1
 
 * Neuer Header
 * ICON!
 * bessere Usability
 * Navi-Bug gefixed
+* Nachträgliches Update der bower.json
 
 ### 0.5.1
 
