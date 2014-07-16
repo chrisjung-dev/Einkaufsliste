@@ -3,18 +3,23 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <ul class="list-group">
+            <ul class="list-group" ng-show="list.Entries.length">
 
                 <li class="list-group-item einkaufsliste-item" ng-repeat="entry in list.Entries"
                     ng-class="{disabled :entry.delete }" ng-click="list.toggleEntryDelete(entry)">
 
                     <span class="badge">{{entry.amount}}</span>
 
-                    <input type="checkbox" name="entry.delete" ng-model="entry.delete"
-                           value="{{entry.hash}}"/>&nbsp;<span ng-class="{strike: entry.delete}">{{entry.name}}</span>
+                    <input hidden="hidden" name="entry.delete" ng-model="entry.delete"
+                           value="{{entry.hash}}"/>
+                    <span class="glyphicon glyphicon-ok" ng-show="entry.delete"></span>
+                    <span class="glyphicon glyphicon-ok-circle" ng-hide="entry.delete"></span>
+                    <span ng-class="{strike: entry.delete}">{{entry.name}}</span>
 
                 </li>
             </ul>
+
+            <div class="well" ng-hide="list.Entries.length">Du musst nicht Einkaufen! Yeah!</div>
         </div>
     </div>
 
