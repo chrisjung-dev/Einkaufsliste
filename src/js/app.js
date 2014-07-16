@@ -21,10 +21,12 @@
                         templateUrl: 'about.html',
                         controller: 'NavigationController',
                         controllerAs: 'nav'
-                    })
+                    } )
                     .otherwise( { redirectTo: '/'} );
             }
         ] )
+        .controller( 'EinkaufslisteController', function () {
+        } )
         .controller( 'ListController', function ( $http ) {
 
             var list = this;
@@ -69,36 +71,40 @@
                 for ( var idx in list.Entries ) {
 
                     var entry = list.Entries[idx];
-
                     if ( entry.delete ) {
                         _delete.delete.push( entry.hash );
                     }
                 }
 
-                $http.post( path_db + "?action=delete", _delete )
-                    .success( function ( data ) {
-                        if ( data.status === "ok" ) {
-                            list.loadList();
-                        }
-                    } );
+                // only post if there are entries to delete
+                if ( _delete.delete.length ) {
+                    $http.post( path_db + "?action=delete", _delete )
+                        .success( function ( data ) {
+                            if ( data.status === "ok" ) {
+                                list.loadList();
+                            }
+                        } );
+                }
 
+            };
+            /**
+             *  Toggle checkbox from wrapping LI, too (usability)
+             * @param _entry
+             */
+            this.toggleEntryDelete = function ( _entry ) {
+                _entry.delete = _entry.delete ? false : true;
             };
 
             this.loadList();
 
         } )
-        .controller( 'NavigationController', function(){
-            this.active = 1;
+        .controller( 'NavigationController', function ( $location ) {
 
-            this.setActive = function(newValue){
-                this.active = newValue;
+            this.isActive = function ( viewLocation ) {
+                return viewLocation === $location.path();
             };
 
-            this.isActive = function(nav){
-                return this.active === nav;
-            };
-
-        })
+        } )
 
 
 })();

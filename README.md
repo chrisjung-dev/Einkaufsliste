@@ -24,9 +24,18 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
+### 0.6.0
+
+* Neuer Header
+* ICON!
+* bessere Usability
+
 ### 0.5.1
+
 * Mobile fix
+
 ### 0.5.0
+
 * Erstes Release
 
 ## Roadmap
@@ -41,6 +50,7 @@ GPL
 ## Libraries
 
 * Bootstrap
+* jQuery
 * Angular.JS
     * Angular-Route
     * Angular-Animate

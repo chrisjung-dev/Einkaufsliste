@@ -1,36 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Einkaufsliste</title>
+    <title>Einkaufsliste</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="src/css/animations.css"/>
-	<style>
-        body {padding-bottom: 150px }
-        .main-headline {font-size: 1.5em}
 
-		.strike {text-decoration:line-through;}
-	</style>
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="src/css/animations.css"/>
+    <style>
+        body {
+            margin-top: 70px
+        }
+
+        .main-headline {
+            font-size: 1.5em
+        }
+
+        footer {
+            border-top: 1px solid #e5e5e5;
+            padding-top: 0.5em;
+        }
+
+        .strike {
+            text-decoration: line-through;
+        }
+    </style>
 </head>
 <body ng-app="Einkaufsliste">
 
 
-<div class="container">
-
-    <h1 class="main-headline">Einkaufsliste</h1>
+<div class="container" ng-controller="EinkaufslisteController as Einkaufsliste">
 
     <ng-include src="'src/views/navigation.tpl.html'"></ng-include>
 
-	<div ng-controller="ListController as list">
-		<div ng-view></div>
-	</div>
+
+    <div ng-controller="ListController as list">
+        <div ng-view></div>
+    </div>
 
 </div>
 
-<footer class="container">Version 0.5.1</footer>
+<footer class="einkaufsliste-footer">
+    <div class="container">
+        <p class="text-center">
+            Version 0.5.1
+        </p>
+    </div>
+</footer>
 
-
+<script src="lib/jquery/dist/jquery.min.js"></script>
+<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="lib/jssha/src/sha1.js"></script>
 <script src="lib/angular/angular.min.js"></script>
 <script src="lib/angular-route/angular-route.min.js"></script>
