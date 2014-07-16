@@ -20,7 +20,7 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
  1. In einen Ordner auf einem öffentlichen Server kopieren
  2. Sicherstellen, dass die Schreibrechte für den Server auf `db/data.csv` stimmen
  3. `bower install` laufen lassen (kann man auch lokal machen und alles hochladen)
- 4. ggf. .htaccess-Schutz vergeben
+ 4. ggf. `.htaccess`-Schutz vergeben
 
 ## Versionen
 
@@ -29,6 +29,7 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 * Neuer Header
 * ICON!
 * bessere Usability
+* Navi-Bug gefixed
 
 ### 0.5.1
 
@@ -59,3 +60,7 @@ GPL
 
 1. Meine Frau, ohne die ich nie auf die Idee gekommen wäre.
 2. CodeSchool für das coole Angular-Tutorial
+3. [crisg von OpenClipart][1]  für das Logo
+
+
+  [1]: https://openclipart.org/detail/182735/check-list-by-crisg-182735
