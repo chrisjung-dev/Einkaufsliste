@@ -70,5 +70,4 @@ $app->post('/delete', function () use ($app) {
 		$app->response->setBody('{"status":"ok"}');
 	}
 );
-
 $app->run();
