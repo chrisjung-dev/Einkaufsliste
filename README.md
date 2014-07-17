@@ -6,7 +6,7 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ### Server
 
- 1. PHP
+ 1. PHP >= 5.3.0
  2. `fopen`
  3. ggf. grunt und bower
 
@@ -23,6 +23,12 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
  4. ggf. `.htaccess`-Schutz vergeben
 
 ## Versionen
+
+### 0.7.0
+
+* Restful API mit Slim-Framework
+* kleine Usability-Enhancements
+* Serverseitige Hash-Generierung für Daten
 
 ### 0.6.0 / 0.6.1
 
@@ -56,6 +62,7 @@ GPL
 * Angular.JS
     * Angular-Route
     * Angular-Animate
+* Slim Framework
 
 ## Danksagungen
 
