@@ -11,7 +11,7 @@
                     <span class="badge">{{entry.amount}}</span>
 
                     <input hidden="hidden" name="entry.delete" ng-model="entry.delete"
-                           value="{{entry.hash}}"/>
+                           value="{{entry.id}}"/>
                     <span class="glyphicon glyphicon-ok" ng-show="entry.delete"></span>
                     <span class="glyphicon glyphicon-ok-circle" ng-hide="entry.delete"></span>
                     <span ng-class="{strike: entry.delete}">{{entry.name}}</span>

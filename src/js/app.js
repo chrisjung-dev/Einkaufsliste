@@ -53,8 +53,13 @@
                     $http
                         .post( path_db + '/add', newEntry )
                         .success( function ( data ) {
-                            list.Entries.push( data );
-                        } );
+                            if ( data !== [] ) {
+                                list.Entries.push( data );
+                            }
+                        } )
+                        .error( function () {
+
+                        });
 
                     this.newEntry = {};
                 }
@@ -69,7 +74,7 @@
 
                     var entry = list.Entries[idx];
                     if ( entry.delete ) {
-                        _delete.delete.push( entry.hash );
+                        _delete.delete.push( entry.id );
                     }
                 }
 
