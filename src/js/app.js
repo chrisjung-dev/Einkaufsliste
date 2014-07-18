@@ -3,7 +3,7 @@
 
     var Einkaufsliste = angular.module( "Einkaufsliste", ['ngRoute', 'ngAnimate'] );
 
-    var path_db = "db/";
+    var path_db = "db/index.php";
 
     Einkaufsliste
         .config( [
@@ -34,33 +34,30 @@
             this.Entries = [];
 
             this.loadList = function () {
-                $http.get( path_db + "?action=read" ).success( function ( data ) {
+                $http.get( path_db + "/list" ).success( function ( data ) {
                     list.Entries = data;
                 } )
             };
 
             this.addListEntry = function () {
 
-                if ( this.newEntry.name && this.newEntry.amount )
+                if ( this.newEntry.name && this.newEntry.amount ) {
 
-                    var shaObj = new jsSHA( this.newEntry.name + this.newEntry.amount, "TEXT" ),
-                        hash = shaObj.getHash( "SHA-1", "HEX" );
+                    var newEntry = {
+                        name: this.newEntry.name,
+                        amount: this.newEntry.amount.toString()
+                    };
 
-                var newEntry = {
-                    hash: hash,
-                    name: this.newEntry.name,
-                    amount: this.newEntry.amount.toString()
-                };
+                    location.hash = "/";
 
-                location.hash = "/";
+                    $http
+                        .post( path_db + '/add', newEntry )
+                        .success( function ( data ) {
+                            list.Entries.push( data );
+                        } );
 
-                $http
-                    .post( path_db + '?action=add', newEntry )
-                    .success( function ( data ) {
-                        list.Entries.push( newEntry );
-                    } );
-
-                this.newEntry = {};
+                    this.newEntry = {};
+                }
 
             };
 
@@ -78,7 +75,8 @@
 
                 // only post if there are entries to delete
                 if ( _delete.delete.length ) {
-                    $http.post( path_db + "?action=delete", _delete )
+                    $http
+                        .post( path_db + "/delete", _delete )
                         .success( function ( data ) {
                             if ( data.status === "ok" ) {
                                 list.loadList();
