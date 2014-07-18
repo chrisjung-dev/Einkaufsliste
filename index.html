@@ -5,14 +5,10 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="src/css/animations.css"/>
     <style>
-        body {
-            margin-top: 70px
-        }
-
         .main-headline {
             font-size: 1.5em
         }
@@ -31,9 +27,8 @@
 <body ng-app="Einkaufsliste">
 
 
+<ng-include src="'src/views/navigation.tpl.html'"></ng-include>
 <div class="container" ng-controller="EinkaufslisteController as Einkaufsliste">
-
-    <ng-include src="'src/views/navigation.tpl.html'"></ng-include>
 
 
     <div ng-controller="ListController as list">
@@ -45,7 +40,8 @@
 <footer class="einkaufsliste-footer">
     <div class="container">
         <p class="text-center">
-            Version 0.6.1 | <a href="http://github.com/campino2k/Einkaufsliste">GitHub</a> | by <a href="http://campino2k.de">Christian Jung</a>
+            Version 0.6.1 | <a href="http://github.com/campino2k/Einkaufsliste">GitHub</a> | by <a
+                href="http://campino2k.de">Christian Jung</a>
         </p>
     </div>
 </footer>
