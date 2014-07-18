@@ -1,6 +1,5 @@
 <?php
-
-require __DIR__ . '/RedBeanPHP4_0_5/rb.php';
+require __DIR__ . '/RedBean/rb.php';
 
 R::setup('sqlite:./database.db');
 
@@ -16,48 +15,51 @@ $app = new \Slim\Slim();
  */
 $app->get('/list', function () use ($app) {
 
-        $entries = R::findAll('entry');
+		$entries = R::findAll('entry');
 
-        $rows = [];
-        foreach ($entries as $entry) {
-            $rows[] = [
-                'hash' => $entry->hash,
-                'name' => $entry->name,
-                'amount' => $entry->amount
-            ];
-        }
+		$rows = [];
+		foreach ($entries as $entry) {
+			$rows[] = [
+				'id' => $entry->id,
+				'name' => $entry->name,
+				'amount' => $entry->amount
+			];
+		}
 
 		$app->response->headers->set('Content-Type', 'application/json');
 		$app->response->setBody(json_encode($rows));
 	}
 );
-
+/**
+ * Add one entry
+ */
 $app->post('/add', function () use ($app) {
 
-        $response = [];
-        $body = json_decode($app->request->getBody(), true);
+		$response = [];
+		$body = json_decode($app->request->getBody(), true);
 
-        $name = filter_var($body['name'], FILTER_SANITIZE_STRING);
-        $amount = (int)filter_var($body['amount'], FILTER_SANITIZE_STRING);
-        $hash = sha1($name . $amount);
+		$name = filter_var($body['name'], FILTER_SANITIZE_STRING);
+		$amount = (int)filter_var($body['amount'], FILTER_SANITIZE_STRING);
+		$hash = sha1($name . $amount);
 
-        $existing = R::find('entry', 'hash = ?', [$hash]);
-        if (!$existing) {
-            $newEntry = R::dispense('entry');
-            $newEntry->hash = $hash;
-            $newEntry->name = $name;
-            $newEntry->amount = $amount;
+		//check if this entry already exists
+		$existing = R::find('entry', 'hash = ?', [$hash]);
+		if (!$existing) {
+			$newEntry = R::dispense('entry');
+			$newEntry->hash = $hash;
+			$newEntry->name = $name;
+			$newEntry->amount = $amount;
 
-            try {
-                R::store($newEntry);
-                $response = ["hash" => $hash, "name" => $name, "amount" => $amount];
-            } catch (Exception $e) {
-                $response = [];
-            }
-        }
+			try {
+				R::store($newEntry);
+				$response = ["hash" => $hash, "name" => $name, "amount" => $amount];
+			} catch (Exception $e) {
+				$response = [];
+			}
+		}
 
-        $app->response->headers->set('Content-Type', 'application/json');
-        $app->response->setBody(json_encode($response));
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setBody(json_encode($response));
 	}
 );
 
@@ -65,17 +67,16 @@ $app->post('/delete', function () use ($app) {
 
 		$json = json_decode($app->request->getBody(), TRUE);
 		$todelete = $json['delete'];
-        $response = ["status" => "ok"];
+		$response = ["status" => "ok"];
 
-        $ids = R::getCol('SELECT id FROM entry WHERE hash IN ("' . implode('","', $todelete) . '")');
-        $entries = R::loadAll('entry', $ids);
-        if ($entries) {
-            try {
-                R::trashAll($entries);
-            } catch (Exception $e) {
-                $response["status"] = "fail";
-            }
-        }
+		$entries = R::loadAll('entry', $todelete);
+		if ($entries) {
+			try {
+				R::trashAll($entries);
+			} catch (Exception $e) {
+				$response["status"] = "fail";
+			}
+		}
 
 		$app->response->headers->set('Content-Type', 'application/json');
 		$app->response->setBody(json_encode($response));
