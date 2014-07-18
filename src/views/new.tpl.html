@@ -14,6 +14,7 @@
 				       placeholder="Was soll eingekauft werden?"
 				       ng-model="list.newEntry.name"
 				       required
+                       autofocus
 				>
 			</div>
 
@@ -43,5 +44,6 @@
 
 	</div>
 
+    <script>document.getElementById('name').focus()</script>
 
 </form>
