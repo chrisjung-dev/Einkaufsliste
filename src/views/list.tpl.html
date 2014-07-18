@@ -19,8 +19,14 @@
                 </li>
             </ul>
 
-            <div class="well" ng-hide="list.Entries.length">Du musst nicht Einkaufen! Yeah!</div>
+            <div class="well" ng-hide="list.Entries.length || list.isOffline" >Du musst nicht Einkaufen! Yeah!</div>
         </div>
+    </div>
+
+    <div class="alert alert-danger"
+         ng-show="list.isOffline"
+         role="alert">
+        <strong>Achtung!</strong> Das hat nicht geklappt. Wenn Du gerade am Einkaufen bist und deine gekauften Sachen von der Liste schmeißen willst: Probier's einfach nachher nochmal!
     </div>
 
     <div class="row">
@@ -48,6 +54,8 @@
     </div>
 
 </form>
+
+
 
 <div class="row hidden-sm visible-xs">
     <div class="col-xs-12 text-center">

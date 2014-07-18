@@ -27,16 +27,21 @@
         ] )
         .controller( 'EinkaufslisteController', function () {
         } )
-        .controller( 'ListController', function ( $http ) {
+        .controller( 'ListController', function ( $http, $location ) {
 
             var list = this;
             this.newEntry = {};
             this.Entries = [];
 
             this.loadList = function () {
-                $http.get( path_db + "/list" ).success( function ( data ) {
-                    list.Entries = data;
-                } )
+                $http.get( path_db + "/list" )
+                    .success( function ( data ) {
+                        list.isOffline = false;
+                        list.Entries = data;
+                    } )
+                    .error( function ( error ) {
+                        list.isOffline = true;
+                    } )
             };
 
             this.addListEntry = function () {
@@ -48,20 +53,22 @@
                         amount: this.newEntry.amount.toString()
                     };
 
-                    location.hash = "/";
+
+                    $location.path( '/' );
 
                     $http
                         .post( path_db + '/add', newEntry )
                         .success( function ( data ) {
+                            list.isOffline = false;
                             if ( data !== [] ) {
                                 list.Entries.push( data );
+                                this.newEntry = {};
                             }
                         } )
                         .error( function () {
-
-                        });
-
-                    this.newEntry = {};
+                            $location.path( '/new' );
+                            list.isOffline = true;
+                        } );
                 }
 
             };
@@ -108,6 +115,5 @@
             };
 
         } )
-
 
 })();
