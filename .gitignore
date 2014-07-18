@@ -1,3 +1,4 @@
 .idea/
 lib/
 db/data.csv
+db/database.db
