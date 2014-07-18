@@ -1,28 +1,31 @@
 <?php
+
+require __DIR__ . '/RedBeanPHP4_0_5/rb.php';
+
+R::setup('sqlite:./database.db');
+
+// freeze, if database is set up and first entries are stored!
+// R::freeze(true);
+
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
-$app->file = "data.csv";
 
+/**
+ * get a list of entries
+ */
 $app->get('/list', function () use ($app) {
 
-		$file_read = fopen($app->file, 'r');
+        $entries = R::findAll('entry');
 
-		if ($file_read !== FALSE) {
-
-			$rows = array();
-			while (($data = fgetcsv($file_read, 1000, ";")) !== FALSE) {
-
-				$new = [
-					'hash' => $data[0],
-					'name' => $data[1],
-					'amount' => $data[2],
-				];
-				$rows[] = $new;
-			}
-		}
-
-		fclose($file_read);
+        $rows = [];
+        foreach ($entries as $entry) {
+            $rows[] = [
+                'hash' => $entry->hash,
+                'name' => $entry->name,
+                'amount' => $entry->amount
+            ];
+        }
 
 		$app->response->headers->set('Content-Type', 'application/json');
 		$app->response->setBody(json_encode($rows));
@@ -31,23 +34,30 @@ $app->get('/list', function () use ($app) {
 
 $app->post('/add', function () use ($app) {
 
-		$json = json_decode($app->request->getBody(), true);
-		$json['hash'] = sha1($json['name'] . $json['amount']);
+        $response = [];
+        $body = json_decode($app->request->getBody(), true);
 
-		$new_csv_line = array(
-			$json['hash'],
-			$json['name'],
-			$json['amount'],
-		);
+        $name = filter_var($body['name'], FILTER_SANITIZE_STRING);
+        $amount = (int)filter_var($body['amount'], FILTER_SANITIZE_STRING);
+        $hash = sha1($name . $amount);
 
-		$file_write = fopen($app->file, 'a');
-		fputcsv($file_write, $new_csv_line, ';');
-		fclose($file_write);
+        $existing = R::find('entry', 'hash = ?', [$hash]);
+        if (!$existing) {
+            $newEntry = R::dispense('entry');
+            $newEntry->hash = $hash;
+            $newEntry->name = $name;
+            $newEntry->amount = $amount;
 
-		$request = $app->request;
-		$app->response->headers->set('Content-Type', 'application/json');
-		$app->response->setBody(json_encode($json));
+            try {
+                R::store($newEntry);
+                $response = ["hash" => $hash, "name" => $name, "amount" => $amount];
+            } catch (Exception $e) {
+                $response = [];
+            }
+        }
 
+        $app->response->headers->set('Content-Type', 'application/json');
+        $app->response->setBody(json_encode($response));
 	}
 );
 
@@ -55,19 +65,20 @@ $app->post('/delete', function () use ($app) {
 
 		$json = json_decode($app->request->getBody(), TRUE);
 		$todelete = $json['delete'];
+        $response = ["status" => "ok"];
 
-		$input = file($app->file);
-		$output_write = fopen($app->file, 'w');
-
-		foreach ($input as $line) {
-
-			if (!in_array(explode(";", $line)[0], $todelete)) {
-				fputs($output_write, $line);
-			}
-		}
+        $ids = R::getCol('SELECT id FROM entry WHERE hash IN ("' . implode('","', $todelete) . '")');
+        $entries = R::loadAll('entry', $ids);
+        if ($entries) {
+            try {
+                R::trashAll($entries);
+            } catch (Exception $e) {
+                $response["status"] = "fail";
+            }
+        }
 
 		$app->response->headers->set('Content-Type', 'application/json');
-		$app->response->setBody('{"status":"ok"}');
+		$app->response->setBody(json_encode($response));
 	}
 );
 $app->run();
