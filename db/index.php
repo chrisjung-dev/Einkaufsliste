@@ -1,73 +1,85 @@
 <?php
+require __DIR__ . '/RedBean/rb.php';
 
-$file = 'data.csv';
+R::setup('sqlite:./database.db');
 
-if (!isset($_GET['action']) && !isset($_POST)) {
-	die();
-}
+// freeze, if database is set up and first entries are stored!
+// R::freeze(true);
 
-switch ($_GET['action']) {
+require 'Slim/Slim.php';
+\Slim\Slim::registerAutoloader();
+$app = new \Slim\Slim();
 
-	case 'add':
-		$file_write = fopen($file, 'a');
+/**
+ * get a list of entries
+ */
+$app->get('/list', function () use ($app) {
 
-		$json = json_decode(file_get_contents("php://input"), TRUE);
+		$entries = R::findAll('entry');
 
-		$new_csv_line = array(
-			$json['hash'],
-			$json['name'],
-			$json['amount'],
-		);
+		$rows = [];
+		foreach ($entries as $entry) {
+			$rows[] = [
+				'id' => $entry->id,
+				'name' => $entry->name,
+				'amount' => $entry->amount
+			];
+		}
 
-		$file_write = fopen($file, 'a');
-		fputcsv($file_write, $new_csv_line, ';');
-		fclose($file_write);
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setBody(json_encode($rows));
+	}
+);
+/**
+ * Add one entry
+ */
+$app->post('/add', function () use ($app) {
 
-		break;
+		$response = [];
+		$body = json_decode($app->request->getBody(), true);
 
-	case 'read':
+		$name = filter_var($body['name'], FILTER_SANITIZE_STRING);
+		$amount = (int)filter_var($body['amount'], FILTER_SANITIZE_STRING);
+		$hash = sha1($name . $amount);
 
-		$file_read = fopen($file, 'r');
+		//check if this entry already exists
+		$existing = R::find('entry', 'hash = ?', [$hash]);
+		if (!$existing) {
+			$newEntry = R::dispense('entry');
+			$newEntry->hash = $hash;
+			$newEntry->name = $name;
+			$newEntry->amount = $amount;
 
-		$row = 1;
-
-		if ($file_read !== FALSE) {
-
-			$rows = array();
-
-			while (($data = fgetcsv($file_read, 1000, ";")) !== FALSE) {
-				$cols = count($data);
-
-				$new = [
-					'hash' => $data[0],
-					'name' => $data[1],
-					'amount' => $data[2],
-				];
-				$rows[] = $new;
+			try {
+				$id = R::store($newEntry);
+				$response = ["id" => $id, "name" => $name, "amount" => $amount];
+			} catch (Exception $e) {
+				$response = [];
 			}
 		}
 
-		fclose($file_read);
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setBody(json_encode($response));
+	}
+);
 
-		echo json_encode($rows);
-		break;
+$app->post('/delete', function () use ($app) {
 
-	case 'delete':
-
-		$json = json_decode(file_get_contents("php://input"), TRUE);
+		$json = json_decode($app->request->getBody(), TRUE);
 		$todelete = $json['delete'];
+		$response = ["status" => "ok"];
 
-		$input = file($file);
-		$output_write = fopen($file, 'w');
-
-		foreach ($input as $line) {
-
-			if (!in_array(explode(";", $line)[0], $todelete)) {
-				fputs($output_write, $line);
+		$entries = R::loadAll('entry', $todelete);
+		if ($entries) {
+			try {
+				R::trashAll($entries);
+			} catch (Exception $e) {
+				$response["status"] = "fail";
 			}
 		}
-		header("Content-Type: application/json");
 
-		echo('{"status":"ok"}');
-		break;
-}
+		$app->response->headers->set('Content-Type', 'application/json');
+		$app->response->setBody(json_encode($response));
+	}
+);
+$app->run();

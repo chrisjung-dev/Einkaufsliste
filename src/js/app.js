@@ -3,7 +3,7 @@
 
     var Einkaufsliste = angular.module( "Einkaufsliste", ['ngRoute', 'ngAnimate'] );
 
-    var path_db = "db/";
+    var path_db = "db/index.php";
 
     Einkaufsliste
         .config( [
@@ -27,40 +27,49 @@
         ] )
         .controller( 'EinkaufslisteController', function () {
         } )
-        .controller( 'ListController', function ( $http ) {
+        .controller( 'ListController', function ( $http, $location ) {
 
             var list = this;
             this.newEntry = {};
             this.Entries = [];
 
             this.loadList = function () {
-                $http.get( path_db + "?action=read" ).success( function ( data ) {
-                    list.Entries = data;
-                } )
+                $http.get( path_db + "/list" )
+                    .success( function ( data ) {
+                        list.isOffline = false;
+                        list.Entries = data;
+                    } )
+                    .error( function ( error ) {
+                        list.isOffline = true;
+                    } )
             };
 
             this.addListEntry = function () {
 
-                if ( this.newEntry.name && this.newEntry.amount )
+                if ( this.newEntry.name && this.newEntry.amount ) {
 
-                    var shaObj = new jsSHA( this.newEntry.name + this.newEntry.amount, "TEXT" ),
-                        hash = shaObj.getHash( "SHA-1", "HEX" );
+                    var newEntry = {
+                        name: this.newEntry.name,
+                        amount: this.newEntry.amount.toString()
+                    };
 
-                var newEntry = {
-                    hash: hash,
-                    name: this.newEntry.name,
-                    amount: this.newEntry.amount.toString()
-                };
 
-                location.hash = "/";
+                    $location.path( '/' );
 
-                $http
-                    .post( path_db + '?action=add', newEntry )
-                    .success( function ( data ) {
-                        list.Entries.push( newEntry );
-                    } );
-
-                this.newEntry = {};
+                    $http
+                        .post( path_db + '/add', newEntry )
+                        .success( function ( data ) {
+                            list.isOffline = false;
+                            if ( data !== [] ) {
+                                list.Entries.push( data );
+                                list.newEntry = {};
+                            }
+                        } )
+                        .error( function () {
+                            $location.path( '/new' );
+                            list.isOffline = true;
+                        } );
+                }
 
             };
 
@@ -72,13 +81,14 @@
 
                     var entry = list.Entries[idx];
                     if ( entry.delete ) {
-                        _delete.delete.push( entry.hash );
+                        _delete.delete.push( entry.id );
                     }
                 }
 
                 // only post if there are entries to delete
                 if ( _delete.delete.length ) {
-                    $http.post( path_db + "?action=delete", _delete )
+                    $http
+                        .post( path_db + "/delete", _delete )
                         .success( function ( data ) {
                             if ( data.status === "ok" ) {
                                 list.loadList();
@@ -105,6 +115,5 @@
             };
 
         } )
-
 
 })();
