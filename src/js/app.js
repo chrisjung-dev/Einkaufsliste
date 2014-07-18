@@ -62,7 +62,7 @@
                             list.isOffline = false;
                             if ( data !== [] ) {
                                 list.Entries.push( data );
-                                this.newEntry = {};
+                                list.newEntry = {};
                             }
                         } )
                         .error( function () {
