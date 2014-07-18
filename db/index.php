@@ -51,8 +51,8 @@ $app->post('/add', function () use ($app) {
 			$newEntry->amount = $amount;
 
 			try {
-				R::store($newEntry);
-				$response = ["hash" => $hash, "name" => $name, "amount" => $amount];
+				$id = R::store($newEntry);
+				$response = ["id" => $id, "name" => $name, "amount" => $amount];
 			} catch (Exception $e) {
 				$response = [];
 			}
