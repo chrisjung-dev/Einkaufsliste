@@ -1,0 +1,33 @@
+CACHE MANIFEST
+# last update: 0.7.0
+
+CACHE:
+
+assets/favicon.ico
+assets/checklist.png
+assets/checklist-small.png
+
+lib/angular/angular.min.js
+lib/angular-animate/angular-animate.min.js
+lib/angular-route/angular-route.min.js
+
+lib/bootstrap/dist/css/bootstrap.min.css
+lib/bootstrap/dist/fonts/glyphicons-halflings-regular.eot
+lib/bootstrap/dist/fonts/glyphicons-halflings-regular.svg
+lib/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf
+lib/bootstrap/dist/fonts/glyphicons-halflings-regular.woff
+lib/bootstrap/dist/js/bootstrap.min.js
+
+lib/jquery/dist/jquery.min.js
+
+src/css/animations.css
+src/js/app.js
+src/views/list.tpl.html
+src/views/navigation.tpl.html
+src/views/new.tpl.html
+src/views/remove.tpl.html
+about.html
+index.html
+
+NETWORK:
+*
