@@ -38,9 +38,20 @@
                     .success( function ( data ) {
                         list.isOffline = false;
                         list.Entries = data;
+                        try {
+                            window.localStorage.clear();
+                            window.localStorage.setItem( 'items', JSON.stringify( data ) );
+                        } catch ( e ) {
+                            // nothing to do
+                        }
                     } )
                     .error( function ( error ) {
                         list.isOffline = true;
+                        try {
+                            list.Entries = JSON.parse( window.localStorage.getItem( 'items' ) );
+                        } catch ( e ) {
+                            // nothing to do
+                        }
                     } )
             };
 
@@ -115,5 +126,4 @@
             };
 
         } )
-
 })();
