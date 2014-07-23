@@ -101,10 +101,15 @@
                     $http
                         .post( path_db + "/delete", _delete )
                         .success( function ( data ) {
+                            list.isOffline = false;
+
                             if ( data.status === "ok" ) {
                                 list.loadList();
                             }
-                        } );
+                        } )
+                        .error(function(){
+                            list.isOffline = true;
+                        });
                 }
 
             };
