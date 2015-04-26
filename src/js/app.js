@@ -22,7 +22,7 @@
                         controller: 'NavigationController',
                         controllerAs: 'nav'
                     } )
-                    .otherwise( { redirectTo: '/'} );
+                    .otherwise( {redirectTo: '/'} );
             }
         ] )
         .controller( 'EinkaufslisteController', function () {
@@ -38,9 +38,20 @@
                     .success( function ( data ) {
                         list.isOffline = false;
                         list.Entries = data;
+                        try {
+                            window.localStorage.clear();
+                            window.localStorage.setItem( 'items', JSON.stringify( data ) );
+                        } catch ( e ) {
+                            // nothing to do
+                        }
                     } )
                     .error( function ( error ) {
                         list.isOffline = true;
+                        try {
+                            list.Entries = JSON.parse( window.localStorage.getItem( 'items' ) );
+                        } catch ( e ) {
+                            // nothing to do
+                        }
                     } )
             };
 
@@ -50,19 +61,28 @@
 
                     var newEntry = {
                         name: this.newEntry.name,
-                        amount: this.newEntry.amount.toString()
+                        amount: this.newEntry.amount.toString(),
+                        addAnother: this.newEntry.addAnother
                     };
 
+                    if ( !newEntry.addAnother ) {
 
-                    $location.path( '/' );
-
+                        $location.path( '/' );
+                    }
                     $http
                         .post( path_db + '/add', newEntry )
                         .success( function ( data ) {
                             list.isOffline = false;
-                            if ( data !== [] ) {
+
+                            if ( data.id ) {
                                 list.Entries.push( data );
                                 list.newEntry = {};
+                                if ( newEntry.addAnother ) {
+                                    list.newEntry.addAnother = newEntry.addAnother;
+                                }
+                            } else {
+                                alert( 'Das hast Du schon auf der Liste!' );
+                                $location.path( '/new' );
                             }
                         } )
                         .error( function () {
@@ -75,7 +95,7 @@
 
             this.deleteEntries = function () {
 
-                var _delete = {'delete': [] };
+                var _delete = {'delete': []};
 
                 for ( var idx in list.Entries ) {
 
@@ -90,9 +110,14 @@
                     $http
                         .post( path_db + "/delete", _delete )
                         .success( function ( data ) {
+                            list.isOffline = false;
+
                             if ( data.status === "ok" ) {
                                 list.loadList();
                             }
+                        } )
+                        .error( function () {
+                            list.isOffline = true;
                         } );
                 }
 
@@ -115,5 +140,4 @@
             };
 
         } )
-
 })();
