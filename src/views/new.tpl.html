@@ -1,30 +1,32 @@
 <form class="form" name="newEntryForm"
-		ng-submit="newEntryForm.$valid && list.addListEntry()" novalidate>
+      ng-submit="newEntryForm.$valid && list.addListEntry()" novalidate>
 
-	<div class="row">
+    <div class="row">
 
-		<div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-6">
 
-			<div class="form-group">
-				<label for="name" >Produkt</label>
-				<input type="text"
-				       class="form-control"
-				       id="name"
-				       name="name"
-				       placeholder="Was soll eingekauft werden?"
-				       ng-model="list.newEntry.name"
-				       required
+            <div class="form-group">
+                <label for="name">Produkt</label>
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       name="name"
+                       placeholder="Was soll eingekauft werden?"
+                       ng-model="list.newEntry.name"
+                       required
                        autofocus
-				>
-			</div>
+                        >
+            </div>
 
-		</div>
+        </div>
 
-		<div class="col-xs-12 col-md-6">
-			<div class="form-group">
-				<label for="amount">Anzahl</label>
-				<input ng-model="list.newEntry.amount" type="number" class="form-control" id="amount" name="amount" placeholder="Wie viele davon?" required autocomplete="off">
-			</div>
+        <div class="col-xs-12 col-md-6">
+            <div class="form-group">
+                <label for="amount">Anzahl</label>
+                <input ng-model="list.newEntry.amount" type="number" class="form-control" id="amount" name="amount"
+                       placeholder="Wie viele davon?" required autocomplete="off">
+            </div>
+        </div>
 
         <div class="col-xs-12">
 
@@ -34,29 +36,29 @@
                 </label>
             </div>
 
-	</div>
+
+        </div>
+    </div>
 
     <div class="alert alert-danger"
          ng-show="list.isOffline"
          role="alert">
-        <strong>Achtung!</strong> Der Artikel konnte nicht auf die Liste gesetzt werden. Vermutlich hast Du gerade kein Internet. Probiere es einfach später nochmal.
+        <strong>Achtung!</strong> Der Artikel konnte nicht auf die Liste gesetzt werden. Vermutlich hast Du gerade
+        kein Internet. Probiere es einfach später nochmal.
     </div>
 
-	<div class="row">
+    <div class="row">
 
-		<div class="col-xs-6">
+        <div class="col-xs-6 ">
+            <button class="btn btn-success btn-lg">Hinzufügen</button>
+        </div>
 
-			<button class="btn btn-success">Hinzufügen</button>
+        <div class="col-xs-6 text-right">
+            <a href="#/" class="btn btn-sm btn-danger" ng-if="!list.newEntry.addAnother">Abbrechen</a>
+            <a href="#/" class="btn btn-sm btn-danger" ng-if="list.newEntry.addAnother">Zur Liste</a>
+        </div>
+    </div>
 
-		</div>
-		<div class="col-xs-6 text-right">
-
-			<a href="#/" class="btn btn-sm btn-danger">Abbrechen</a>
-
-		</div>
-
-	</div>
-
-    <script>document.getElementById('name').focus()</script>
+    <script>document.getElementById( 'name' ).focus()</script>
 
 </form>

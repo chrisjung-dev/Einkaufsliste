@@ -22,7 +22,7 @@
                         controller: 'NavigationController',
                         controllerAs: 'nav'
                     } )
-                    .otherwise( { redirectTo: '/'} );
+                    .otherwise( {redirectTo: '/'} );
             }
         ] )
         .controller( 'EinkaufslisteController', function () {
@@ -73,9 +73,16 @@
                         .post( path_db + '/add', newEntry )
                         .success( function ( data ) {
                             list.isOffline = false;
-                            if ( data !== [] ) {
+
+                            if ( data.id ) {
                                 list.Entries.push( data );
                                 list.newEntry = {};
+                                if ( newEntry.addAnother ) {
+                                    list.newEntry.addAnother = newEntry.addAnother;
+                                }
+                            } else {
+                                alert( 'Das hast Du schon auf der Liste!' );
+                                $location.path( '/new' );
                             }
                         } )
                         .error( function () {
@@ -88,7 +95,7 @@
 
             this.deleteEntries = function () {
 
-                var _delete = {'delete': [] };
+                var _delete = {'delete': []};
 
                 for ( var idx in list.Entries ) {
 
@@ -109,9 +116,9 @@
                                 list.loadList();
                             }
                         } )
-                        .error(function(){
+                        .error( function () {
                             list.isOffline = true;
-                        });
+                        } );
                 }
 
             };
