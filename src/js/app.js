@@ -61,12 +61,14 @@
 
                     var newEntry = {
                         name: this.newEntry.name,
-                        amount: this.newEntry.amount.toString()
+                        amount: this.newEntry.amount.toString(),
+                        addAnother: this.newEntry.addAnother
                     };
 
+                    if ( !newEntry.addAnother ) {
 
-                    $location.path( '/' );
-
+                        $location.path( '/' );
+                    }
                     $http
                         .post( path_db + '/add', newEntry )
                         .success( function ( data ) {

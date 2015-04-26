@@ -25,7 +25,14 @@
 				<label for="amount">Anzahl</label>
 				<input ng-model="list.newEntry.amount" type="number" class="form-control" id="amount" name="amount" placeholder="Wie viele davon?" required autocomplete="off">
 			</div>
-		</div>
+
+        <div class="col-xs-12">
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="list.newEntry.addAnother"> Weiteren Artikel hinzufügen
+                </label>
+            </div>
 
 	</div>
 
