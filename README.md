@@ -23,6 +23,19 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
+## 0.8.1
+
+* About-Dokument überarbeitet
+* Button-Größen beim Hinzufügen zurückgeändert
+
+## 0.8.0
+
+* Bootstrap Update
+* Angular Update
+* Option zum Mehrfach-Hinzufügen (#9)
+* Hinzufügen-Bug behoben (#8)
+* Zoom-Bug behoben
+
 ### 0.7.0
 
 * Restful API mit Slim-Framework
