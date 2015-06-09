@@ -23,6 +23,10 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
+## 0.8.2
+
+* Lizenz in der bower.json-Datei korrigiert
+
 ## 0.8.1
 
 * About-Dokument überarbeitet
