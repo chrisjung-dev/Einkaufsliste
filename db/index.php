@@ -17,13 +17,13 @@ $app->get('/list', function () use ($app) {
 
 		$entries = R::findAll('entry');
 
-		$rows = [];
+		$rows = array();
 		foreach ($entries as $entry) {
-			$rows[] = [
+			$rows[] = array(
 				'id' => $entry->id,
 				'name' => $entry->name,
 				'amount' => $entry->amount
-			];
+			);
 		}
 
 		$app->response->headers->set('Content-Type', 'application/json');
@@ -35,7 +35,7 @@ $app->get('/list', function () use ($app) {
  */
 $app->post('/add', function () use ($app) {
 
-		$response = [];
+		$response = array();
 		$body = json_decode($app->request->getBody(), true);
 
 		$name = filter_var($body['name'], FILTER_SANITIZE_STRING);
@@ -43,7 +43,7 @@ $app->post('/add', function () use ($app) {
 		$hash = sha1($name . $amount);
 
 		//check if this entry already exists
-		$existing = R::find('entry', 'hash = ?', [$hash]);
+		$existing = R::find('entry', 'hash = ?', array($hash));
 		if (!$existing) {
 			$newEntry = R::dispense('entry');
 			$newEntry->hash = $hash;
@@ -52,9 +52,9 @@ $app->post('/add', function () use ($app) {
 
 			try {
 				$id = R::store($newEntry);
-				$response = ["id" => $id, "name" => $name, "amount" => $amount];
+				$response = array("id" => $id, "name" => $name, "amount" => $amount);
 			} catch (Exception $e) {
-				$response = [];
+				$response = array();
 			}
 		}
 
@@ -67,7 +67,7 @@ $app->post('/delete', function () use ($app) {
 
 		$json = json_decode($app->request->getBody(), TRUE);
 		$todelete = $json['delete'];
-		$response = ["status" => "ok"];
+		$response = array("status" => "ok");
 
 		$entries = R::loadAll('entry', $todelete);
 		if ($entries) {
