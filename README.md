@@ -23,6 +23,13 @@ Dieses kleine Tool löst das "Ewige-Einkaufsliste-für-mehr-Personen-Problem". K
 
 ## Versionen
 
+## 0.8.3
+
+* Läuft jetzt auch mit PHP 5.3
+* AnguarJS Update auf 1.4.2
+* Bootstrap Update auf 3.3.5
+* jQuery Update auf 2.1.4
+
 ## 0.8.2
 
 * Lizenz in der bower.json-Datei korrigiert
