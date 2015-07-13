@@ -1,6 +1,6 @@
 {
   "name": "einkaufsliste",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "authors": [
     "Christian Jung <cjung@intera.de>"
   ],
@@ -14,10 +14,10 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.3.4",
-    "angular": "~1.4.0-rc.1",
-    "angular-route": "~1.4.0-rc.1",
-    "angular-animate": "~1.4.0-rc.1",
-    "jquery": "~2.1.1"
+    "bootstrap": "~3.3.5",
+    "angular": "~1.4.2",
+    "angular-route": "~1.4.2",
+    "angular-animate": "~1.4.2",
+    "jquery": "~2.1.4"
   }
 }
