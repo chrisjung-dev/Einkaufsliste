@@ -1,3 +1,6 @@
+<?php
+require_once("keyit.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>
